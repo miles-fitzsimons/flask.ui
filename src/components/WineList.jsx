@@ -6,7 +6,7 @@ const WineList = ({ history }) => {
   const [{ isError, isLoading }, wines] = useGetWinesApi(history);
 
   return (
-    <>
+    <div className="home">
       <h1>Here is your wine</h1>
       {isError ? (
         <h1>Something went wrong</h1>
@@ -30,7 +30,7 @@ const WineList = ({ history }) => {
           </div>
         </>
       )}
-    </>
+    </div>
   );
 };
 

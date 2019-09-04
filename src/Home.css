@@ -5,7 +5,14 @@
   border-radius: 5px;
 }
 
-.Home {
+.home {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form {
   text-align: center;
   display: flex;
   flex-direction: column;

@@ -3,16 +3,17 @@ import { useState, useEffect, useReducer, useContext } from "react";
 
 import wineApiReducer from "../reducers/wineApiReducer";
 
-import UserContext from "../Contexts/UserContext";
+import UserContext from "../contexts/UserContext";
 
 const useGetWinesApi = history => {
+  const userContext = useContext(UserContext);
+  const { token, userId } = userContext;
+
   const [wines, setWines] = useState([]);
   const [state, dispatch] = useReducer(wineApiReducer, {
     isLoading: false,
     isError: false
   });
-
-  const userContext = useContext(UserContext);
 
   useEffect(() => {
     const getWines = async () => {
@@ -20,14 +21,13 @@ const useGetWinesApi = history => {
       const client = axios.create({
         baseURL: "http://127.0.0.1:5000/",
         headers: {
-          Authorization: userContext.token
+          Authorization: token
         }
       });
 
       await client
-        .get(`/wine/${userContext.userId}`)
+        .get(`/wine/${userId}`)
         .then(result => {
-          console.log("res", result);
           dispatch({ type: "GET_SUCCESS" });
           setWines(result.data.data);
           // WINE CONTEXT?
@@ -39,7 +39,7 @@ const useGetWinesApi = history => {
     };
 
     getWines();
-  }, []);
+  }, [token, userId, history]);
 
   return [state, wines];
 };

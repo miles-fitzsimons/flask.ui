@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useState, useEffect, useReducer, useRef, useContext } from "react";
+import { useContext, useState, useReducer, useEffect, useRef } from "react";
 
 import dataApiReducer from "../reducers/dataApiReducer";
 
 import UserContext from "../contexts/UserContext";
 
-const useLoginApi = history => {
-  const userContext = useContext(UserContext);
+const usePostWineApi = history => {
+  const { token, userId } = useContext(UserContext);
 
   const isFirstRender = useRef(true);
   const [data, setData] = useState({});
@@ -24,20 +24,21 @@ const useLoginApi = history => {
       return;
     }
 
-    const postLogin = async () => {
+    const postWine = async () => {
       dispatch({ type: "POST_BEGIN" });
 
       const client = axios.create({
-        baseURL: "http://127.0.0.1:5000/"
+        baseURL: "http://127.0.0.1:5000/",
+        headers: {
+          Authorization: token
+        }
       });
 
       await client
-        .post("/auth/login", data)
-        .then(result => {
+        .post("/wine/add", { ...data, user_id: userId })
+        .then(() => {
           if (!didCancel) {
             dispatch({ type: "POST_SUCCESS" });
-            userContext.setToken(result.data.authorization);
-            userContext.setUserId(result.data.userId);
             history.push("/winelist");
           }
         })
@@ -48,14 +49,13 @@ const useLoginApi = history => {
         });
     };
 
-    postLogin();
+    postWine();
 
     return () => {
       didCancel = true;
     };
-  }, [data, history, userContext]);
-
+  }, [data, token, history, userId]);
   return [state, setData];
 };
 
-export default useLoginApi;
+export default usePostWineApi;

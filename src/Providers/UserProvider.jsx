@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import UserContext from "../Contexts/UserContext";
+import UserContext from "../contexts/UserContext";
 
 const UserProvider = props => {
   const [userId, setUserId] = useState("");

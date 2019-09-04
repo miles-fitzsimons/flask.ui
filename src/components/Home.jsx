@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import LoginForm from "./LoginForm";
 
-import "./Home.css";
+import "../Home.css";
 
 const Home = props => {
   const [isDisplayingLoginForm, setIsDisplayingLoginForm] = useState(true);
